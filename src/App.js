@@ -8,10 +8,23 @@ function App(props) {
 
     const [tasks, setTasks] = useState([]);
 
+    const updateTask = (taskInfo) => {
+        let taskToUpdate = tasks.find(t => t.info === taskInfo);
+        taskToUpdate.isChecked = !taskToUpdate.isChecked;
+        taskToUpdate.info = taskInfo;
+        let newTaskList = tasks.filter(t => t.info !== taskInfo);
+        setTasks([taskToUpdate, ...newTaskList]);
+    }
+
+    const deleteTask = (taskInfo) => {
+        let newTaskList = tasks.filter(t => t.info !== taskInfo);
+        setTasks(newTaskList);
+    }
+
   return (
     <div className="App">
-        <TodoHeader tasks={tasks} setTasks={setTasks}/>
-        { tasks.map(t => <TodoItem task={t} key={t.info} />) }
+        <TodoHeader tasks={tasks} setTasks={setTasks} />
+        { tasks.map(t => <TodoItem task={t} key={t.info} updateTask={updateTask} deleteTask={deleteTask}/>) }
     </div>
   );
 }
